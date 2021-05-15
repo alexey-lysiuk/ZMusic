@@ -10,50 +10,50 @@ jobs:
       fail-fast: false
       matrix:
         config:
-        - {
-            name: "Visual Studio - Release",
-            os: windows-2019,
-            build_type: "Release"
-          }
-        - {
-            name: "Visual Studio - Debug",
-            os: windows-2019,
-            build_type: "Debug"
-          }
+        # - {
+        #     name: "Visual Studio - Release",
+        #     os: windows-2019,
+        #     build_type: "Release"
+        #   }
+        # - {
+        #     name: "Visual Studio - Debug",
+        #     os: windows-2019,
+        #     build_type: "Debug"
+        #   }
         - {
             name: "macOS Clang - Dynamic Deps",
-            os: macos-10.15,
+            os: macos-12,
             build_type: "Release"
           }
-        - {
-            name: "macOS Clang - Static Deps",
-            os: macos-10.15,
-            build_type: "Release",
-            extra_options: "-DDYN_FLUIDSYNTH=OFF -DDYN_MPG123=OFF -DDYN_SNDFILE=OFF"
-          }
+        # - {
+        #     name: "macOS Clang - Static Deps",
+        #     os: macos-10.15,
+        #     build_type: "Release",
+        #     extra_options: "-DDYN_FLUIDSYNTH=OFF -DDYN_MPG123=OFF -DDYN_SNDFILE=OFF"
+        #   }
         - {
             name: "Linux GCC - Dynamic Deps",
             os: ubuntu-20.04,
             build_type: "Release"
           }
-        - {
-            name: "Linux GCC - Static Deps",
-            os: ubuntu-20.04,
-            build_type: "Release",
-            extra_options: "-DDYN_FLUIDSYNTH=OFF -DDYN_MPG123=OFF -DDYN_SNDFILE=OFF"
-          }
-        - {
-            name: "Linux Clang - Dynamic Deps",
-            os: ubuntu-20.04,
-            build_type: "Release",
-            extra_options: "-DCMAKE_C_COMPILER=/usr/bin/clang -DCMAKE_CXX_COMPILER=/usr/bin/clang++"
-          }
-        - {
-            name: "Linux Clang - Static Deps",
-            os: ubuntu-20.04,
-            build_type: "Release",
-            extra_options: "-DCMAKE_C_COMPILER=/usr/bin/clang -DCMAKE_CXX_COMPILER=/usr/bin/clang++ -DDYN_FLUIDSYNTH=OFF -DDYN_MPG123=OFF -DDYN_SNDFILE=OFF"
-          }
+        # - {
+        #     name: "Linux GCC - Static Deps",
+        #     os: ubuntu-20.04,
+        #     build_type: "Release",
+        #     extra_options: "-DDYN_FLUIDSYNTH=OFF -DDYN_MPG123=OFF -DDYN_SNDFILE=OFF"
+        #   }
+        # - {
+        #     name: "Linux Clang - Dynamic Deps",
+        #     os: ubuntu-20.04,
+        #     build_type: "Release",
+        #     extra_options: "-DCMAKE_C_COMPILER=/usr/bin/clang -DCMAKE_CXX_COMPILER=/usr/bin/clang++"
+        #   }
+        # - {
+        #     name: "Linux Clang - Static Deps",
+        #     os: ubuntu-20.04,
+        #     build_type: "Release",
+        #     extra_options: "-DCMAKE_C_COMPILER=/usr/bin/clang -DCMAKE_CXX_COMPILER=/usr/bin/clang++ -DDYN_FLUIDSYNTH=OFF -DDYN_MPG123=OFF -DDYN_SNDFILE=OFF"
+        #   }
 
     steps:
     - uses: actions/checkout@v1
@@ -85,21 +85,27 @@ jobs:
           cmake --build . --target install -- --jobs=2 --keep-going
         fi
 
-    - name: Test
-      shell: bash
-      run: |
-        cd samples/list_midi_devices
-        mkdir build
-        cd build
-        declare -x PREFIX=`pwd`/../../../build_install
-        cmake -DCMAKE_PREFIX_PATH=${PREFIX} ${{ matrix.config.extra_options }} ..
-        cmake --build . --config ${{ matrix.config.build_type }}
-        if [[ "${{ runner.os }}" == 'macOS' ]]; then
-          declare -x DYLD_LIBRARY_PATH=${DYLD_LIBRARY_PATH}:${PREFIX}
-        fi
-        if [[ "${{ runner.os }}" == 'Windows' ]]; then
-          cp ${PREFIX}/bin/zmusic.dll ${{ matrix.config.build_type }}
-          ${{ matrix.config.build_type }}/list_midi_devices.exe
-        else
-          ./list_midi_devices
-        fi
+    # - name: Test
+    #   shell: bash
+    #   run: |
+    #     cd samples/list_midi_devices
+    #     mkdir build
+    #     cd build
+    #     declare -x PREFIX=`pwd`/../../../build_install
+    #     cmake -DCMAKE_PREFIX_PATH=${PREFIX} ${{ matrix.config.extra_options }} ..
+    #     cmake --build . --config ${{ matrix.config.build_type }}
+    #     if [[ "${{ runner.os }}" == 'macOS' ]]; then
+    #       declare -x DYLD_LIBRARY_PATH=${DYLD_LIBRARY_PATH}:${PREFIX}
+    #     fi
+    #     if [[ "${{ runner.os }}" == 'Windows' ]]; then
+    #       cp ${PREFIX}/bin/zmusic.dll ${{ matrix.config.build_type }}
+    #       ${{ matrix.config.build_type }}/list_midi_devices.exe
+    #     else
+    #       ./list_midi_devices
+    #     fi
+
+    - name: Upload Build Directory
+      uses: actions/upload-artifact@v1
+      with:
+        path: build
+        name: ${{ matrix.config.name }}
