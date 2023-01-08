@@ -16,6 +16,7 @@ typedef struct
     const char *message;
 } GError;
 typedef void *gpointer;
+typedef int gboolean;
 
 #define g_new(s, c) FLUID_ARRAY(s, c)
 #define g_free(p) FLUID_FREE(p)
@@ -33,9 +34,9 @@ typedef void *gpointer;
 #define G_FILE_TEST_IS_REGULAR 2
 
 #define g_file_test fluid_g_file_test
-#define g_shell_parse_argv fluid_g_shell_parse_argv
-BOOL fluid_g_file_test(const char *path, int flags);
-BOOL fluid_g_shell_parse_argv(const char *command_line, int *argcp, char ***argvp, void *dummy);
+//#define g_shell_parse_argv fluid_g_shell_parse_argv
+gboolean fluid_g_file_test(const char *path, int flags);
+//gboolean fluid_g_shell_parse_argv(const char *command_line, int *argcp, char ***argvp, void *dummy);
 
 #define g_get_monotonic_time fluid_g_get_monotonic_time
 double fluid_g_get_monotonic_time(void);
@@ -72,7 +73,7 @@ typedef struct
 
 #define g_thread_create fluid_g_thread_create
 #define g_thread_join fluid_g_thread_join
-GThread *fluid_g_thread_create(GThreadFunc func, void *data, BOOL joinable, GError **error);
+GThread *fluid_g_thread_create(GThreadFunc func, void *data, gboolean joinable, GError **error);
 void fluid_g_thread_join(GThread *thread);
 
 /* Regular mutex */

@@ -273,8 +273,6 @@
 #define HAVE_SOCKLEN_T 1
 
 /* Define if using glib stubs instead of real glib. */
-#ifdef _WIN32
 #define WITH_GLIB_STUBS
-#endif
 
 #endif /* CONFIG_H */

@@ -105,6 +105,13 @@ if ( WIN32 )
         utils/win32_glibstubs.c
         utils/win32_glibstubs.h
     )
+else()
+    set( fluidsynth_SOURCES
+        ${fluidsynth_SOURCES}
+        utils/posix_glibstubs.c
+        utils/posix_glibstubs.h
+    )
+    find_package(Threads REQUIRED)
 endif ( WIN32 )
 
 set ( public_HEADERS
@@ -151,12 +158,3 @@ target_include_directories ( fluidsynth PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}/../..
     ${CMAKE_CURRENT_SOURCE_DIR}/../../../source/decoder
 )
-
-
-if (NOT WIN32)
-   find_package(PkgConfig REQUIRED)
-   pkg_search_module(GLIB REQUIRED glib-2.0)
-   target_include_directories ( fluidsynth PUBLIC ${GLIB_INCLUDE_DIRS} )
-   target_link_libraries ( fluidsynth PUBLIC ${pkgcfg_lib_GLIB_glib-2.0} )
-
-endif()

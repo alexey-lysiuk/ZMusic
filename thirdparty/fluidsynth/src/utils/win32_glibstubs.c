@@ -30,7 +30,7 @@ static wchar_t *utf8_to_wc(const char *str)
     return wstr;
 }
 
-BOOL fluid_g_file_test(const char *pathA, int flags)
+gboolean fluid_g_file_test(const char *pathA, int flags)
 {
     wchar_t *path = utf8_to_wc(pathA);
     if (path == NULL)
@@ -82,7 +82,7 @@ static unsigned __stdcall g_thread_wrapper(void *info_)
     return 0;
 }
 
-GThread *fluid_g_thread_create(GThreadFunc func, void *data, BOOL joinable, GError **error)
+GThread *fluid_g_thread_create(GThreadFunc func, void *data, gboolean joinable, GError **error)
 {
     static GError error_container;
 

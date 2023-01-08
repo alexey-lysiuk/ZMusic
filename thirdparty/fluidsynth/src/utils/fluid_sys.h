@@ -148,6 +148,12 @@ typedef gintptr  intptr_t;
 #pragma warning(disable : 4996)
 #endif
 
+#else
+
+#ifdef WITH_GLIB_STUBS
+#include "posix_glibstubs.h"
+#endif
+
 #endif
 
 /* Darwin special defines (taken from config_macosx.h) */
@@ -158,10 +164,6 @@ typedef gintptr  intptr_t;
 
 #ifdef LADSPA
 #include <gmodule.h>
-#endif
-
-#ifndef WIN32
-#include <glib/gstdio.h>
 #endif
 
 /**
