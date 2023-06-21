@@ -33,7 +33,7 @@ jobs:
           os: ubuntu-22.04
           build_type: Release
           cmake_options: -DCMAKE_C_COMPILER=gcc-13 -DCMAKE_CXX_COMPILER=g++-13
-          deps_cmd: sudo apt update && sudo apt install gcc-13
+          deps_cmd: sudo apt update && sudo apt install g++-13
 
         # - name: Linux GCC - Static Deps
         #   os: ubuntu-latest
