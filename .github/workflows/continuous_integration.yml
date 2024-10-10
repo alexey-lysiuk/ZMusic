@@ -92,4 +92,4 @@ jobs:
       with:
         name: ${{ matrix.config.name }}
         path: build_install
-        ignore: ignore
+        if-no-files-found: ignore
