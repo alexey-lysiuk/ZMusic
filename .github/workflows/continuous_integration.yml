@@ -38,12 +38,12 @@ jobs:
           build_type: Release
           cmake_options: -DDYN_FLUIDSYNTH=OFF -DDYN_MPG123=OFF -DDYN_SNDFILE=OFF
           deps_cmd: sudo apt update && sudo apt install libasound2-dev libglib2.0-dev libmpg123-dev libsndfile1-dev
-          
+
         - name: Linux Clang - Dynamic Deps
           os: ubuntu-latest
           build_type: Release
           cmake_options: -DCMAKE_C_COMPILER=/usr/bin/clang -DCMAKE_CXX_COMPILER=/usr/bin/clang++
-          
+
         - name: Linux Clang - Static Deps
           os: ubuntu-latest
           build_type: Release
@@ -51,7 +51,7 @@ jobs:
           deps_cmd: sudo apt update && sudo apt install libasound2-dev libglib2.0-dev libmpg123-dev libsndfile1-dev
 
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
 
     - name: Install Dependencies
       shell: bash
@@ -87,3 +87,9 @@ jobs:
         else
           ./list_midi_devices
         fi
+
+    - name: Upload Install Directory
+      uses: actions/upload-artifact@v4
+      with:
+        path: build_install
+        name: ${{ matrix.config.name }}
